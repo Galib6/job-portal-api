@@ -1,6 +1,8 @@
 import { Controller, Get, Post } from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
 import { AppService } from "./app.service";
+import { Auth } from "./decorators";
+import { AuthType } from "./enums/auth-type.enum";
 import { LogCleanupService } from "./services";
 
 @Controller()
@@ -10,8 +12,14 @@ export class AppController {
     private readonly logCleanupService: LogCleanupService
   ) {}
 
+  @Auth(AuthType.None)
   @Get("/health")
   health() {
+    return { status: "ok" };
+  }
+
+  @Get("/authorize")
+  authorize() {
     return { status: "ok" };
   }
 
