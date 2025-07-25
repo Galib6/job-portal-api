@@ -20,7 +20,6 @@ import { ApplicationsModule } from "./modules/application/application.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { GalleryModule } from "./modules/galleries/gallery.module";
 import { JobsModule } from "./modules/jobs/job.module";
-import { QueueModule } from "./modules/queues/queue.module";
 import { LogCleanupService } from "./services";
 
 const MODULES = [
@@ -28,7 +27,7 @@ const MODULES = [
   HelpersModule,
   AuthModule,
   GalleryModule,
-  QueueModule,
+  // QueueModule,
   JobsModule,
   ApplicationsModule,
 ];
