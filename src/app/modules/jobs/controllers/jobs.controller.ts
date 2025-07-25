@@ -9,6 +9,8 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiBearerAuth } from "@nestjs/swagger";
+import { Auth } from "@src/app/decorators";
+import { AuthType } from "@src/app/enums/auth-type.enum";
 import { SuccessResponse } from "@src/app/types";
 import { JobCreateDto } from "../dtos/create.dto";
 import { JobFilterDTO } from "../dtos/filter.dto";
@@ -21,6 +23,8 @@ import { JobsService } from "../services/jobs.service";
 export class JobsController {
   RELATIONS = [];
   constructor(private readonly service: JobsService) {}
+
+  @Auth(AuthType.None)
   @Get()
   async findAll(
     @Query() query: JobFilterDTO
@@ -28,6 +32,7 @@ export class JobsController {
     return this.service.findAllBase(query, { relations: this.RELATIONS });
   }
 
+  @Auth(AuthType.None)
   @Get(":id")
   async findById(@Param("id") id: number): Promise<Job> {
     return this.service.findByIdBase(id, { relations: this.RELATIONS });

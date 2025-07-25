@@ -4,6 +4,8 @@ import { Column, Entity } from "typeorm";
 
 @Entity(ENUM_TABLE_NAMES.JOBS, { orderBy: { createdAt: "DESC" } })
 export class Job extends BaseEntity {
+  public static readonly SEARCH_TERMS: string[] = ["title", "location"];
+
   @Column({ type: ENUM_COLUMN_TYPES.VARCHAR, nullable: true })
   title?: string;
 
@@ -22,6 +24,12 @@ export class Job extends BaseEntity {
   @Column({ type: ENUM_COLUMN_TYPES.VARCHAR, nullable: true })
   position?: string;
 
+  @Column({ type: ENUM_COLUMN_TYPES.VARCHAR, nullable: true })
+  jobType?: string;
+
+  @Column({ type: ENUM_COLUMN_TYPES.VARCHAR, nullable: true })
+  locationType?: string;
+
   @Column({ type: ENUM_COLUMN_TYPES.TIMESTAMP_UTC, nullable: true })
   applicationDeadline?: Date;
 
@@ -29,11 +37,11 @@ export class Job extends BaseEntity {
   vacancies?: number;
 
   @Column({ type: ENUM_COLUMN_TYPES.VARCHAR, nullable: true })
-  age?: number;
+  age?: string;
 
   @Column({ type: ENUM_COLUMN_TYPES.VARCHAR, nullable: true })
   experience?: string;
 
-  @Column({ type: ENUM_COLUMN_TYPES.JSONB, nullable: true })
+  @Column({ type: ENUM_COLUMN_TYPES.TEXT, nullable: true })
   requirements?: any;
 }

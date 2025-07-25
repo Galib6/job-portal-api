@@ -179,7 +179,6 @@ export abstract class BaseService<T extends BaseEntity>
   }
 
   async createOneBase(data: T, options?: IFindByIdBaseOptions): Promise<T> {
-    console.log("🚀😬 ~ BaseService ~ createOneBase ~ data:", data);
     const created = await this.repo.save(data);
     return await this.findByIdBase(created.id, options);
   }

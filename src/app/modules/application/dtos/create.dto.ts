@@ -1,5 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 import { Job } from "../../jobs/entities/job.entity";
 
 export class ApplicationCreateDto {
@@ -21,14 +27,18 @@ export class ApplicationCreateDto {
   @IsEmail()
   applicantEmail?: string;
 
-  @ApiProperty({ type: String, description: "Cover letter", required: true })
+  @ApiProperty({
+    type: String,
+    description: "notes of the applicant",
+    required: true,
+  })
   @IsNotEmpty()
   @IsString()
-  coverLetter?: string;
+  notes?: string;
 
   @ApiProperty({ type: String, description: "Job ID", required: true })
   @IsNotEmpty()
-  @IsString()
+  @IsNumber()
   job?: Job;
 
   @ApiProperty({ type: String, description: "CV URL", required: false })

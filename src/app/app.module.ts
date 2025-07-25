@@ -13,7 +13,7 @@ import { AppService } from "./app.service";
 import { ExceptionFilter } from "./filters";
 import { GuardsModule } from "./guards/gaurds.module";
 import { HelpersModule } from "./helpers/helpers.module";
-import { ActiveUserInserter } from "./interceptors/audit.interceptor";
+import { ActiveUserInserter } from "./interceptors/activeUser.interceptor";
 import { ResponseInterceptor } from "./interceptors/response.interceptor";
 import { AuthMiddleware } from "./middlewares";
 import { ApplicationsModule } from "./modules/application/application.module";

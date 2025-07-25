@@ -14,6 +14,7 @@ export class ExceptionFilter implements NestExceptionFilter {
   private readonly logger = new Logger(ExceptionFilter.name);
 
   catch(exception: any, host: ArgumentsHost) {
+    console.log("🚀😬 ~ ExceptionFilter ~ catch ~ exception:", exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();

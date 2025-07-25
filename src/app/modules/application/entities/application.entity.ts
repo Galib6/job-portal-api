@@ -25,7 +25,7 @@ export class Application extends BaseEntity {
   @RelationId((e: Application) => e.job)
   jobId?: Job;
 
-  @ManyToOne(() => User, { onDelete: "NO ACTION", nullable: false })
+  @ManyToOne(() => User, { onDelete: "NO ACTION", nullable: true })
   @Type(() => User)
   user?: User;
 

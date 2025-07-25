@@ -1,6 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { BaseFilterDTO } from "@src/app/base/baseFilter.dto";
-import { IsNumberString, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNumberString, IsOptional, IsString } from "class-validator";
+import { JobType, LocationType } from "./create.dto";
 
 export class JobFilterDTO extends BaseFilterDTO {
   @ApiProperty({
@@ -31,4 +32,30 @@ export class JobFilterDTO extends BaseFilterDTO {
   @IsOptional()
   @IsString()
   readonly searchTerm!: string;
+
+  @ApiPropertyOptional({
+    description: "Type of job",
+    enum: JobType,
+  })
+  @IsOptional()
+  @IsString()
+  @IsEnum(JobType)
+  jobType?: JobType;
+
+  @ApiPropertyOptional({
+    description: "Type of location",
+    enum: LocationType,
+  })
+  @IsOptional()
+  @IsString()
+  @IsEnum(LocationType)
+  locationType?: LocationType;
+
+  @ApiPropertyOptional({
+    description: "Type of location",
+    example: "e",
+  })
+  @IsOptional()
+  @IsString()
+  location?: string;
 }

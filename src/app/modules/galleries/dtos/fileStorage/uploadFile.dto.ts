@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, Matches } from "class-validator";
+import { IsOptional, IsString, Matches } from "class-validator";
 
 export class UploadFileDto {
   @ApiProperty({
@@ -19,6 +19,7 @@ export class UploadFileDto {
     required: false,
   })
   @IsString()
+  @IsOptional()
   @Matches(/^[a-z0-9-]+$/, {
     message:
       "Folder name must contain only lowercase letters, numbers, and hyphens.",

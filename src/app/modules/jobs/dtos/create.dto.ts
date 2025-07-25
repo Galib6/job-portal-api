@@ -1,5 +1,26 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
+
+export enum JobType {
+  FullTime = "Full-time",
+  PartTime = "Part-time",
+  Contract = "Contract",
+  Temporary = "Temporary",
+  Internship = "Internship",
+  Volunteer = "Volunteer",
+}
+
+export enum LocationType {
+  Remote = "Remote",
+  OnSite = "On-site",
+  Hybrid = "Hybrid",
+}
 
 export class JobCreateDto {
   @ApiProperty({ description: "Job title" })
@@ -48,8 +69,8 @@ export class JobCreateDto {
 
   @ApiPropertyOptional({ description: "Age requirement", type: Number })
   @IsOptional()
-  @IsNumber()
-  age?: number;
+  @IsString()
+  age?: string;
 
   @ApiPropertyOptional({ description: "Experience required" })
   @IsOptional()
@@ -63,6 +84,24 @@ export class JobCreateDto {
   })
   @IsOptional()
   requirements?: any;
+
+  @ApiPropertyOptional({
+    description: "Type of job",
+    enum: JobType,
+  })
+  @IsOptional()
+  @IsString()
+  @IsEnum(JobType)
+  jobType?: JobType;
+
+  @ApiPropertyOptional({
+    description: "Type of location",
+    enum: LocationType,
+  })
+  @IsOptional()
+  @IsString()
+  @IsEnum(LocationType)
+  locationType?: LocationType;
 
   @IsOptional()
   createdBy: any;

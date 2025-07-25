@@ -11,6 +11,8 @@ import {
 } from "@nestjs/common";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { Auth } from "@src/app/decorators";
+import { AuthType } from "@src/app/enums/auth-type.enum";
 import { IFileMeta } from "@src/app/interfaces";
 import { SuccessResponse } from "@src/app/types";
 import { storageImageOptions } from "@src/shared/file.constants";
@@ -29,6 +31,7 @@ export class FileStorageController {
     return this.fileUploadService.filterFiles(query);
   }
 
+  @Auth(AuthType.None)
   @Post()
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: UploadFileDto })

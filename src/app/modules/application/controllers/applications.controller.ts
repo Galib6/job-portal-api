@@ -9,6 +9,8 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiBearerAuth } from "@nestjs/swagger";
+import { Auth } from "@src/app/decorators";
+import { AuthType } from "@src/app/enums/auth-type.enum";
 import { SuccessResponse } from "@src/app/types";
 import { ApplicationCreateDto } from "../dtos/create.dto";
 import { ApplicationFilterDTO } from "../dtos/filter.dto";
@@ -34,6 +36,7 @@ export class ApplicationsController {
     return this.service.findByIdBase(id, { relations: this.RELATIONS });
   }
 
+  @Auth(AuthType.None)
   @Post()
   async createOne(@Body() body: ApplicationCreateDto): Promise<Application> {
     return this.service.createOneBase(body, { relations: this.RELATIONS });
