@@ -10,7 +10,7 @@ import { MigrationService } from "./services/migration.service";
       useFactory: () => ({
         type: "postgres",
         autoLoadEntities: true,
-        synchronize: false,
+        synchronize: true,
         port: ENV.defaultDatabase.port,
         username: ENV.defaultDatabase.user,
         password: ENV.defaultDatabase.password,
