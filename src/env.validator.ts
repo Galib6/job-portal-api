@@ -73,12 +73,6 @@ const envSchema = Joi.object({
   SMTP_USERNAME: Joi.string().required(),
   SMTP_PASSWORD: Joi.string().required(),
 
-  REDIS_HOST: Joi.string().required(),
-  REDIS_PORT: Joi.string().required(),
-  REDIS_USERNAME: Joi.string().allow(""),
-  REDIS_PASSWORD: Joi.string().optional(),
-  REDIS_TLS: Joi.string().required(),
-
   SEED_SUPER_ADMIN_EMAIL: Joi.string().required(),
   SEED_SUPER_ADMIN_PASSWORD: Joi.string().required(),
 
