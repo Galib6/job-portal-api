@@ -63,16 +63,15 @@ jobs:
           S3_SECRET_KEY: Rqf25w+w9On9DLeIS5LIPa18kEWmEoXjKDHs5MOtW2Q
           S3_BUCKET: unispaces
           S3_FOLDER_PREFIX: media
-          REDIS_TLS: false
           SMTP_HOST: smtp-relay.brevo.com
           SMTP_PORT: 587
-          SMTP_AUTH_USER: asadullahalgalib81@gmail.com
-          SMTP_AUTH_PASS: xsmtpsib-508c35518e9024b0d6410b746c2759e2fd978b7a6b867f961f69853bda214d42-8XI0THaG1YBNfvVn
+          SMTP_USERNAME: asadullahalgalib81@gmail.com
+          SMTP_PASSWORD: b6D7wPxUZtMC4jVT
           GOOGLE_CLIENT_ID: ${{ env.GOOGLE_CLIENT_ID }}
           GOOGLE_SECRET: ${{ env.GOOGLE_SECRET }}
           GOOGLE_REDIRECT_URL: http://localhost:3000/api/v1/auth/google-redirect
-          SUPER_ADMIN_EMAIL: galib@gmail.com
-          SUPER_ADMIN_PASSWORD: 123456
+          SEED_SUPER_ADMIN_EMAIL: superadmin@jobportal.com
+          SEED_SUPER_ADMIN_PASSWORD: 123456
           LIVEKIT_API_KEY: galib
           LIVEKIT_API_SECRET: 123456galib
           LIVEKIT_SERVER_URL: wss://r-tech.live

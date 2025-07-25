@@ -19,17 +19,6 @@ import { MigrationService } from "./services/migration.service";
         logging: ENV.defaultDatabase.logging,
         migrations: [__dirname + "/migrations/*{.ts,.js}"],
         migrationsTableName: "migrations",
-        ssl:
-          ENV.config.nodeEnv === "production"
-            ? {
-                rejectUnauthorized: false,
-              }
-            : false,
-        extra: {
-          max: 20, // Maximum connections
-          idleTimeoutMillis: 30000,
-          connectionTimeoutMillis: 5000,
-        },
         cli: {
           migrationsDir: "src/database/migrations",
         },

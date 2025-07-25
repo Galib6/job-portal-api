@@ -7,5 +7,5 @@ node dist/cli.js migration validate
 node dist/cli.js migration run
 node dist/database/seeds/seed.js
 
-# Start the app
+
 node dist/main.js
