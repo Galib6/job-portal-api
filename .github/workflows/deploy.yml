@@ -8,7 +8,7 @@ env:
   PORT: 6000
   APP_ENV: production
   NODE_ENV: production
-  APP_NAME: Job-Portal
+  APP_NAME: job-portal
   SERVER_USER: ${{ secrets.SERVER_USER }}
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
