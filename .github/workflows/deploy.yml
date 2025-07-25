@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  PORT: 6800
+  PORT: 6000
   APP_ENV: production
   NODE_ENV: production
   APP_NAME: Job-Portal
