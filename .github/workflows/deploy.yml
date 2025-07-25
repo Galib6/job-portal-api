@@ -90,78 +90,59 @@ jobs:
 
   Deploy:
     needs: Build
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Deploy with Zero Downtime
+      - name: Logging to docker
+        run: docker login -u ${{env.DOCKER_USER}} -p ${{env.DOCKER_PASSWORD}}
+
+      - name: Deploy To Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.SERVER_HOST }}
           username: ${{ env.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            set -e
+            echo "Logging to docker hub"
+            docker login -u ${{env.DOCKER_USER}} -p ${{env.DOCKER_PASSWORD}}
+            echo "Stopping previous build"
+            docker stop ${{ env.APP_NAME }}
+            echo "Removing previous build"
+            docker rm ${{ env.APP_NAME }}
+            echo "Removing old image from local"
+            docker rmi ${{env.DOCKER_USER}}/${{ env.APP_NAME }}:latest
+            echo "Pulling latest image from docker hub"
+            docker pull ${{env.DOCKER_USER}}/${{ env.APP_NAME }}:latest
+  Run:
+    needs: Deploy
 
-            echo "Logging into Docker"
-            docker login -u ${{ env.DOCKER_USER }} -p ${{ env.DOCKER_PASSWORD }}
+    runs-on: ubuntu-latest
 
-            echo "Pulling latest Docker image"
-            docker pull ${{ env.DOCKER_USER }}/${{ env.APP_NAME }}:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-            CURRENT_PORT=$(grep -oP '(?<=proxy_pass http://127.0.0.1:)\d+' /etc/nginx/sites-enabled/job-protal || echo "")
+      - name: Logging to docker
+        run: docker login -u ${{env.DOCKER_USER}} -p ${{env.DOCKER_PASSWORD}}
 
-            if [ -z "$CURRENT_PORT" ]; then
-              NEW_PORT=6000
-              NEW_CONTAINER=job-portal-api-6000
-            elif [ "$CURRENT_PORT" == "6000" ]; then
-              NEW_PORT=6010
-              OLD_CONTAINER=job-portal-api-6000
-              NEW_CONTAINER=job-portal-api-6010
-            else
-              NEW_PORT=6000
-              OLD_CONTAINER=job-portal-api-6010
-              NEW_CONTAINER=job-portal-api-6000
-            fi
-
-            echo "Starting new container on port $NEW_PORT"
-            docker run -d --name $NEW_CONTAINER \
-              -e NODE_ENV=production \
+      - name: Deploy To Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            echo "Logging to docker hub"
+            docker login -u ${{env.DOCKER_USER}} -p ${{env.DOCKER_PASSWORD}}
+            echo "Starting latest build"
+            docker run -e NODE_ENV=${{ env.APP_ENV }} -d \
               --restart always \
-              -p $NEW_PORT:6000 \
+              -p ${{ env.PORT }}:${{ env.PORT }} \
               -v /var/www/uploads:/uploads \
-              ${{ env.DOCKER_USER }}/${{ env.APP_NAME }}:latest || {
-                echo "❌ Failed to start container. Cleaning up..."
-                docker rmi ${{ env.DOCKER_USER }}/${{ env.APP_NAME }}:latest || true
-                exit 1
-              }
-
-            echo "Waiting for service health on port $NEW_PORT..."
-            for i in {1..20}; do
-              sleep 5
-              if curl -sSf http://localhost:$NEW_PORT/api/v1/health > /dev/null; then
-                echo "✅ Healthy!"
-                break
-              elif [ $i -eq 20 ]; then
-                echo "❌ Health check failed. Removing container and image..."
-                docker logs $NEW_CONTAINER || true
-                docker rm -f $NEW_CONTAINER || true
-                docker rmi ${{ env.DOCKER_USER }}/${{ env.APP_NAME }}:latest || true
-                exit 1
-              fi
-            done
-
-            echo "Updating Nginx to new port $NEW_PORT"
-            sed -i "s/proxy_pass http:\/\/127.0.0.1:$CURRENT_PORT;/proxy_pass http:\/\/127.0.0.1:$NEW_PORT;/" /etc/nginx/sites-enabled/job-protal
-            nginx -s reload
-
-            if [ ! -z "$OLD_CONTAINER" ]; then
-              echo "Removing old container: $OLD_CONTAINER"
-              OLD_IMAGE=$(docker inspect --format='{{.Image}}' $OLD_CONTAINER)
-              docker rm -f $OLD_CONTAINER || true
-              docker rmi $OLD_IMAGE || true
-              docker image prune -f
-            fi
-
-            echo "✅ Deployment complete"
+              --name ${{ env.APP_NAME }} \
+              ${{env.DOCKER_USER}}/${{ env.APP_NAME }}:latest
+            echo "Deploy Done"
